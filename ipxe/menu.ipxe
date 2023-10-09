@@ -1,0 +1,26 @@
+#!ipxe
+
+isset ${menu-default} || set menu-default WinPE
+
+##################################################
+:start
+menu Welcome to iPXE's Boot Menu
+item WinPE Install Windows 10
+item BootHardDisk Boot from Hard Disk
+choose --default exit --timeout 10000 target && goto ${target}
+##################################################
+
+:WinPE
+  kernel http://${next-server}/windows/wimboot
+  initrd http://${next-server}/windows/winpeshl.ini
+  initrd http://${next-server}/windows/install.bat
+  initrd http://${next-server}/windows/iso/bootmgr.efi                  bootmgr.efi
+  initrd http://${next-server}/windows/iso/efi/boot/bootx64.efi         Bootx64.efi
+  initrd http://${next-server}/windows/iso/boot/bcd                     BCD
+  initrd http://${next-server}/windows/iso/boot/boot.sdi                boot.sdi
+  initrd http://${next-server}/windows/iso/sources/boot.wim             boot.wim
+  boot
+
+:BootHardDisk
+  exit
+  goto start

@@ -1,0 +1,24 @@
+version: '3'
+services:
+  pxe-server:
+    container_name: pxe-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 67:67 # DHCP
+      - 69:69 # TFTP
+      - 80:80 # HTTP
+      - 445:445 # SMB
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+      - MKNOD
+    volumes:
+      - ./entrypoint.sh:/root/entrypoint.sh
+      - ./conf/dnsmasq.conf:/etc/dnsmasq.conf
+      - ./conf/smb.conf:/etc/samba/smb.conf
+      - ./conf/nginx.conf:/etc/nginx/sites-enabled/default
+      - ./ipxe:/tftpboot
+      - ./files:/tftpboot/windows
+    entrypoint: /root/entrypoint.sh
