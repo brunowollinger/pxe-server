@@ -83,12 +83,6 @@ systemctl restart dnsmasq
 
 ### HTTP Configuration
 
-Backup the configuration file.
-
-```bash
-cp /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default.old
-```
-
 Overwrite the configuration file.
 
 ```bash
@@ -96,7 +90,9 @@ cat <<EOF > /etc/nginx/sites-enabled/default
 server {
         listen 80 default_server;
         listen [::]:80 default_server;
+        #root /var/www/html;
         root /tftpboot;
+        #index index.html;
         server_name _;
         location / {
                 try_files $uri $uri/ =404;
