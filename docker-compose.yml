@@ -10,6 +10,7 @@ services:
       - 69:69 # TFTP
       - 80:80 # HTTP
       - 445:445 # SMB
+      - 4011:4011 # PXE Discovery Service
     network_mode: "host"
     cap_add:
       - NET_ADMIN
